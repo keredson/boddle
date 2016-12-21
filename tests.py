@@ -52,6 +52,10 @@ class TestBoddle(unittest.TestCase):
         self.assertEqual(bottle.request.params['name'], 'anderson')
       self.assertEqual(bottle.request.params['name'], 'derek')
  
+  def testBody(self):
+    with boddle(body='body'):
+      self.assertEqual(bottle.request.body.read(), 'body')
+ 
   
 if __name__=='__main__':
   unittest.main()

@@ -9,9 +9,13 @@ try:
 except ImportError:
   from urllib.parse import urlparse, urlencode
 
+
+__version__ = '0.2.0'
+
+
 class boddle(object):
 
-  def __init__(self, params=None, path=None, method=None, headers=None, json=None, url=None, **extras):
+  def __init__(self, params=None, path=None, method=None, headers=None, json=None, url=None, body=None, **extras):
 
     environ = {}
     
@@ -31,6 +35,13 @@ class boddle(object):
     if json is not None:
       environ['CONTENT_TYPE'] = 'application/json'
       self._set_payload(environ, lib_json.dumps(json).encode('utf8'))
+
+    if body is not None:
+      if body.lower:
+        body = io.StringIO(unicode(body))
+      environ['CONTENT_LENGTH'] = str(len(body.read()))
+      body.seek(0)
+      environ['wsgi.input'] = body
 
     if url is not None:
       o = urlparse(url)
