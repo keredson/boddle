@@ -8,6 +8,10 @@ class TestBoddle(unittest.TestCase):
     with boddle(params={'name':'derek'}):
       self.assertEqual(bottle.request.params['name'], 'derek')
  
+  def test_no_params_no_throw(self):
+    with boddle():
+      self.assertEqual(bottle.request.params.items(), [])
+ 
   def testGetParams(self):
     with boddle(method='get', params={'name':'derek'}):
       self.assertEqual(bottle.request.params['name'], 'derek')

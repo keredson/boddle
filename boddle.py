@@ -10,12 +10,12 @@ except ImportError:
   from urllib.parse import urlparse, urlencode
 
 
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 
 
 class boddle(object):
 
-  def __init__(self, params=None, path=None, method=None, headers=None, json=None, url=None, body=None, **extras):
+  def __init__(self, params={}, path=None, method=None, headers=None, json=None, url=None, body=None, **extras):
 
     environ = {}
     self.extras = extras
