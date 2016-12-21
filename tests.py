@@ -34,6 +34,9 @@ class TestBoddle(unittest.TestCase):
   def testExtraStuff(self):
     with boddle(extra='woot'):
       self.assertEqual(bottle.request.extra, 'woot')
+      with boddle(extra='woot2'):
+        self.assertEqual(bottle.request.extra, 'woot2')
+    self.assertFalse(hasattr(bottle.request,'extra'))
  
   def testJSON(self):
     with boddle(json={'name':'derek'}):
@@ -55,6 +58,7 @@ class TestBoddle(unittest.TestCase):
   def testBody(self):
     with boddle(body='body'):
       self.assertEqual(bottle.request.body.read(), 'body')
+      self.assertEqual(bottle.request.body.readline(), 'body')
  
   
 if __name__=='__main__':

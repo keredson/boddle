@@ -10,7 +10,7 @@ except ImportError:
   from urllib.parse import urlparse, urlencode
 
 
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 
 
 class boddle(object):
@@ -18,6 +18,8 @@ class boddle(object):
   def __init__(self, params=None, path=None, method=None, headers=None, json=None, url=None, body=None, **extras):
 
     environ = {}
+    self.extras = extras
+    self.extra_orig = {}
     
     if params is not None:
       self._set_payload(environ, urlencode(params).encode('utf8'))
@@ -49,10 +51,7 @@ class boddle(object):
       environ['HTTP_HOST'] = o.netloc
       environ['PATH_INFO'] = o.path.lstrip('/')
 
-    request = bottle.BaseRequest(environ)
-    for k,v in extras.items():
-      setattr(request, k, v)
-    self.request = request
+    self.environ = environ
     
   def _set_payload(self, environ, payload):
     payload = bytes(payload)
@@ -60,10 +59,23 @@ class boddle(object):
     environ['wsgi.input'] = io.BytesIO(payload)
 
   def __enter__(self):
-    self.orig = bottle.request
-    bottle.request = self.request
+    self.orig = bottle.request.environ
+    bottle.request.environ = self.environ
+    for k,v in self.extras.items():
+      if hasattr(bottle.request, k):
+        self.extra_orig[k] = getattr(bottle.request, k)
+      setattr(bottle.request, k, v)
 
   def __exit__(self,a,b,c):
-      bottle.request = self.orig
+    bottle.request.environ = self.orig
+    for k,v in self.extras.items():
+      if k in self.extra_orig:
+        setattr(bottle.request, k, self.extra_orig[k])
+      else:
+        try:
+          delattr(bottle.request, k)
+        except AttributeError:
+          pass
+        
 
 
