@@ -10,7 +10,7 @@ class TestBoddle(unittest.TestCase):
  
   def test_no_params_no_throw(self):
     with boddle():
-      self.assertEqual(bottle.request.params.items(), [])
+      self.assertEqual(list(bottle.request.params.items()), [])
  
   def testGetParams(self):
     with boddle(method='get', params={'name':'derek'}):
@@ -61,8 +61,8 @@ class TestBoddle(unittest.TestCase):
  
   def testBody(self):
     with boddle(body='body'):
-      self.assertEqual(bottle.request.body.read(), 'body')
-      self.assertEqual(bottle.request.body.readline(), 'body')
+      self.assertEqual(bottle.request.body.read(), b'body')
+      self.assertEqual(bottle.request.body.readline(), b'body')
  
   
 if __name__=='__main__':

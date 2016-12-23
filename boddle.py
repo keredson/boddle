@@ -40,7 +40,7 @@ class boddle(object):
 
     if body is not None:
       if body.lower:
-        body = io.StringIO(unicode(body))
+        body = io.BytesIO(bytes(body.encode('utf-8')))
       environ['CONTENT_LENGTH'] = str(len(body.read()))
       body.seek(0)
       environ['wsgi.input'] = body
