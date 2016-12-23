@@ -62,6 +62,9 @@ with boddle(path='/woot'):
 
 
 ## Testing
+
+![image](https://api.travis-ci.org/keredson/boddle.svg?branch=master)
+
 ```
 $ git clone https://github.com/keredson/boddle.git
 $ cd boddle
