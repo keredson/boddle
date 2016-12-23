@@ -28,17 +28,47 @@ class TestIt(unittest.TestCase):
     with boddle(params={'name':'derek'}):
       self.assertEqual(woot(), 'derek')
 ```
-
 See [`example.py`](example.py).
+
+### Options
+
+The Bottle-specific params that are supported are:
+
+| Argument | Notes |
+|----------|-------|
+| `params` | Populates `request.params`.  Takes a `dict` or list of pairs.  Useful for both POST and GET params. |
+| `path` | The path component of the url.  Populates `request.path`, which always has a preceeding `/`. |
+| `method` | POST, GET, etc.  Bottle will uppercase the value. |
+| `headers` | Any HTTP headers.  Takes a `dict`. |
+| `json` | Takes anything that can be consumed by `json.dumps()`.  Also sets the content type of the request. |
+| `url` | The full URL, protocol, domain, port, path, etc.  Will be parsed until it's `urlparts` before populating `request.url`. |
+| `body` | The raw body of the request.  Takes either a `str` or a file-like object.  `str`s will be converted into file-like objects.  Populated `request.body`. |
+
+All other keyword arguments will be assigned to the request object.  For instance, we often do:
+```python
+with boddle(current_user=someone):
+  # code that accesses bottle.request.current_user
+```
+
+You can also nest `boddle` calls.  For instance:
+```python
+with boddle(path='/woot'):
+  with boddle(params={'name':'derek'}):
+    # both path and params are set here
+  # only path is set here
+```
+
+**ALL CHANGES TO `bottle.request` ARE REVERTED WHEN THE WITH BLOCK ENDS.**
+
 
 ## Testing
 ```
 $ git clone https://github.com/keredson/boddle.git
 $ cd boddle
 $ python tests.py 
-..........
+............
 ----------------------------------------------------------------------
-Ran 10 tests in 0.001s
+Ran 12 tests in 0.001s
 
 OK
 ```
