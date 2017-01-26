@@ -10,7 +10,7 @@ except ImportError:
   from urllib.parse import urlparse, urlencode
 
 
-__version__ = '0.2.2'
+__version__ = '0.2.3'
 
 
 class boddle(object):
