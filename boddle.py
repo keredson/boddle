@@ -1,13 +1,22 @@
 # GNU LESSER GENERAL PUBLIC LICENSE
 
-import bottle, io
+import io
 import json as lib_json
+
+try:
+  import bottle
+except ImportError:
+  print("you don't have bottle installed")
+  
 
 try:
   from urlparse import urlparse
   from urllib import urlencode
 except ImportError:
   from urllib.parse import urlparse, urlencode
+
+
+__version__ = '0.2.5'
 
 
 class boddle(object):
