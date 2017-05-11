@@ -13,7 +13,7 @@ def long_description():
 
 setup(
   name='boddle',
-  version='0.2.3',
+  version=__import__('boddle').__version__,
   description="A unit testing tool for Python's bottle library.",
   long_description=long_description(),
   author='Derek Anderson',
