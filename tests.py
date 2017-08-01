@@ -34,6 +34,10 @@ class TestBoddle(unittest.TestCase):
   def testHeaders(self):
     with boddle(headers={'x_header':'value'}):
       self.assertEqual(bottle.request.headers['X_HEADER'], 'value')
+
+  def testHyphenatedHeaders(self):
+    with boddle(headers={'x-header':'value'}):
+      self.assertEqual(bottle.request.headers['X-HEADER'], 'value')
  
   def testExtraStuff(self):
     with boddle(extra='woot'):

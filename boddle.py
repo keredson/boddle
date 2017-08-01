@@ -37,7 +37,7 @@ class boddle(object):
       environ['REQUEST_METHOD'] = method
       
     for k, v in (headers or {}).items():
-      k = k.upper()
+      k = k.replace('-', '_').upper()
       environ['HTTP_'+k] = v
 
     if json is not None:
