@@ -26,6 +26,7 @@ class boddle(object):
     environ = {}
     self.extras = extras
     self.extra_orig = {}
+    self.orig_app_reader = bottle.BaseRequest.app
     
     if params is not None:
       self._set_payload(environ, urlencode(params).encode('utf8'))
@@ -71,6 +72,7 @@ class boddle(object):
       if hasattr(bottle.request, k):
         self.extra_orig[k] = getattr(bottle.request, k)
       setattr(bottle.request, k, v)
+    setattr(bottle.BaseRequest, 'app', True)
 
   def __exit__(self,a,b,c):
     bottle.request.environ = self.orig
@@ -82,6 +84,6 @@ class boddle(object):
           delattr(bottle.request, k)
         except AttributeError:
           pass
-        
+    setattr(bottle.BaseRequest, 'app', self.orig_app_reader)
 
 
