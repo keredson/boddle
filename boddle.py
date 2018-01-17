@@ -21,7 +21,7 @@ __version__ = '0.2.7'
 
 class boddle(object):
 
-  def __init__(self, params={}, path=None, method=None, headers=None, json=None, url=None, body=None, **extras):
+  def __init__(self, params={}, path=None, method=None, headers=None, json=None, url=None, body=None, query={}, **extras):
 
     environ = {}
     self.extras = extras
@@ -57,6 +57,9 @@ class boddle(object):
       environ['wsgi.url_scheme'] = o.scheme
       environ['HTTP_HOST'] = o.netloc
       environ['PATH_INFO'] = o.path.lstrip('/')
+
+    if query is not None:
+      environ['QUERY_STRING'] = urlencode(query)
 
     self.environ = environ
     
