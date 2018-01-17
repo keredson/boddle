@@ -43,6 +43,7 @@ The Bottle-specific params that are supported are:
 | `json` | Takes anything that can be consumed by `json.dumps()`.  Also sets the content type of the request. |
 | `url` | The full URL, protocol, domain, port, path, etc.  Will be parsed until its `urlparts` before populating `request.url`. |
 | `body` | The raw body of the request.  Takes either a `str` or a file-like object.  `str`s will be converted into file-like objects.  Populated `request.body`. |
+| `query` | Populates `request.query`.  Takes a `dict`.  |
 
 All other keyword arguments will be assigned to the request object.  For instance, we often do:
 ```python
