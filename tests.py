@@ -67,8 +67,18 @@ class TestBoddle(unittest.TestCase):
     with boddle(body='body'):
       self.assertEqual(bottle.request.body.read(), b'body')
       self.assertEqual(bottle.request.body.readline(), b'body')
- 
-  
+
+  def testGetQuery(self):
+    with boddle(method='get', query={'name':'derek'}):
+      self.assertEqual(bottle.request.query['name'], 'derek')
+
+  def testRevertQuery(self):
+    with boddle(query={'name':'derek'}):
+      self.assertEqual(bottle.request.query['name'], 'derek')
+      with boddle(query={'name':'anderson'}):
+        self.assertEqual(bottle.request.query['name'], 'anderson')
+      self.assertEqual(bottle.request.query['name'], 'derek')
+
 if __name__=='__main__':
   unittest.main()
 
