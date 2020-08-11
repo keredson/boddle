@@ -2,6 +2,8 @@
 
 import io
 import json as lib_json
+from base64 import b64encode
+
 
 try:
   import bottle
@@ -16,17 +18,21 @@ except ImportError:
   from urllib.parse import urlparse, urlencode
 
 
-__version__ = '0.2.8'
+__version__ = '0.2.9'
 
 
 class boddle(object):
 
-  def __init__(self, params={}, path=None, method=None, headers=None, json=None, url=None, body=None, query={}, **extras):
+  def __init__(self, params={}, path=None, method=None, headers=None, json=None, url=None, body=None, query={}, auth=None, **extras):
 
     environ = {}
     self.extras = extras
     self.extra_orig = {}
     self.orig_app_reader = bottle.BaseRequest.app
+
+    if auth is not None:
+      user, password = auth
+      environ["HTTP_AUTHORIZATION"] = "Basic {}".format(b64encode(bytes(f"{user}:{password}", "utf-8")).decode("ascii"))
     
     if params is not None:
       self._set_payload(environ, urlencode(params).encode('utf8'))
